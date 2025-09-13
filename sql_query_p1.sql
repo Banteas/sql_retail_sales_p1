@@ -3,7 +3,7 @@ CREATE DATABASE sql_project_p2;
 
 
 -- Create TABLE
-DROP TABLE IF EXISTS retail_sales;
+
 CREATE TABLE retail_sales
             (
                 transaction_id INT PRIMARY KEY,	
@@ -17,10 +17,8 @@ CREATE TABLE retail_sales
                 price_per_unit NUMERIC(10, 2),	
                 cogs	NUMERIC(10, 2),
                 total_sale NUMERIC(10, 2)
-            );
+            )
 
-SELECT * FROM retail_sales
-LIMIT 10
 
 
     
@@ -55,7 +53,7 @@ WHERE
     OR
     cogs IS NULL
     OR
-    total_sale IS NULL;
+    total_sale IS NULL
     
 -- 
 DELETE FROM retail_sales
@@ -74,7 +72,7 @@ WHERE
     OR
     cogs IS NULL
     OR
-    total_sale IS NULL;
+    total_sale IS NULL
     
 -- ***Data Exploration***
 
@@ -83,7 +81,7 @@ SELECT COUNT(*) as total_sale FROM retail_sales
 
 -- How many unique customers we have ?
 
-SELECT COUNT(DISTINCT customer_id) as total_sale FROM retail_sales
+SELECT COUNT(DISTINCT customer_id) as uniq_cust FROM retail_sales
 
 
 -- How many categories do we have and which ones?
@@ -110,20 +108,20 @@ SELECT category ,COUNT(DISTINCT category) AS total_categories FROM retail_sales 
 
 SELECT *
 FROM retail_sales
-WHERE sale_date = '2022-11-05';
+WHERE sale_date = '2022-11-05'
 
 
 -- Q.2 Write a SQL query to retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 4 in the month of Nov-2022
 
 SELECT 
-  *
+    *
 FROM retail_sales
 WHERE 
     category = 'Clothing'
-    AND 
-    TO_CHAR(sale_date, 'YYYY-MM') = '2022-11'
-    AND
-    quantity >= 4
+    AND EXTRACT(YEAR FROM sale_date) = 2022
+    AND EXTRACT(MONTH FROM sale_date) = 11
+    AND quantity >= 4
+
 
 
 -- Q.3 Write a SQL query to calculate the total sales (total_sale) for each category.
@@ -187,7 +185,7 @@ WHERE avg_total_sale = (
         GROUP BY EXTRACT(YEAR FROM sale_date), EXTRACT(MONTH FROM sale_date)
     ) AS t2
     WHERE t2.year = monthly_averages.year
-);
+)
 
     
 
@@ -199,7 +197,7 @@ SELECT
 FROM retail_sales
 GROUP BY customer_id
 ORDER BY total_sales DESC
-LIMIT 5;
+LIMIT 5
 
 -- Q.9 Write a SQL query to find the number of unique customers who purchased items from each category.
 
@@ -220,7 +218,7 @@ SELECT CASE
         ELSE 'Evening'
         END AS timezone, COUNT(total_sale)
 FROM retail_sales
-GROUP BY timezone;
+GROUP BY timezone
 
 
 
